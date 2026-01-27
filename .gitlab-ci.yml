@@ -1,3 +1,10 @@
+variables:
+  SCRIPT:
+    value: "base"
+    description: "Select which Ansible playbook to run."
+    options:
+      - "base"
+
 stages:
   - script
 
