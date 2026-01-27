@@ -17,6 +17,6 @@ ansible-base:
   before_script:
     - apt update && apt install tzdata ansible python3-pip -y
   script:
-    - ansible-playbook $CI_PROJECT_DIR/base.yml
+    - ansible-playbook $CI_PROJECT_DIR/ansible/base.yml
   rules:
     - if: '$SCRIPT == "base"'
