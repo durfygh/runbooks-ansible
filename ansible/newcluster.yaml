@@ -1,0 +1,2 @@
+argocd login --insecure
+argocd cluster add default --name prd --yes --kubeconfig ~/Documents/config-prd

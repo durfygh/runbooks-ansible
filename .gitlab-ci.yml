@@ -1,0 +1,15 @@
+stages:
+  - script
+
+ansible-base:
+  stage: script
+  variables:
+    DEBIAN_FRONTEND: noninteractive
+  image:
+    name: registry.durp.info/ubuntu:latest
+  before_script:
+    - apt update && apt install tzdata ansible python3-pip -y
+  script:
+    - ansible-playbook $CI_PROJECT_DIR/base.yml
+  rules:
+    - if: '$SCRIPT == "base"'
