@@ -16,8 +16,12 @@ ansible-base:
     DEBIAN_FRONTEND: noninteractive
   image:
     name: registry.durp.info/ubuntu:latest
+
   before_script:
     - apt update && apt install tzdata ansible python3-pip -y
+    - eval $(ssh-agent -s)
+    - chmod 400 "$SSH_PRIVATE_KEY"
+    - ssh-add "$SSH_PRIVATE_KEY"
   script:
     - ansible-playbook $CI_PROJECT_DIR/ansible/base.yaml
   rules:
