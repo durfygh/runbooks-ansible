@@ -10,12 +10,7 @@ spec:
 
 ---
 variables:
-#  SCRIPT:
-#    value: "base"
-#    description: "Select which Ansible playbook to run."
-#    options:
-#      - "base"
-
+  SCRIPT: $[[ inputs.SCRIPT ]]
   ANSIBLE_CONFIG: "$CI_PROJECT_DIR/ansible.cfg"
 
 stages:
