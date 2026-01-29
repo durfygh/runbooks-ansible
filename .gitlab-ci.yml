@@ -1,6 +1,6 @@
 variables:
   SCRIPT:
-    value: "base"
+    value: ""
     description: "Select which Ansible playbook to run."
     options:
       - "base"
