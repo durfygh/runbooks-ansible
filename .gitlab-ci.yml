@@ -1,9 +1,20 @@
+spec:
+  inputs:
+    SCRIPT:
+      description: "Select which Ansible playbook to run."
+      options:
+        - ''
+        - 'base'
+      default: ''
+      type: string
+
+---
 variables:
-  SCRIPT:
-    value: ""
-    description: "Select which Ansible playbook to run."
-    options:
-      - "base"
+#  SCRIPT:
+#    value: "base"
+#    description: "Select which Ansible playbook to run."
+#    options:
+#      - "base"
 
   ANSIBLE_CONFIG: "$CI_PROJECT_DIR/ansible.cfg"
 
