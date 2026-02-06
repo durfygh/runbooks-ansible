@@ -42,3 +42,18 @@ dev-node:
 openvpn:
   hosts:
     192.168.98.20:
+
+dev-cluster:
+  children:
+    dev-master:
+    dev-node:
+
+dmz-cluster:
+  children:
+    dmz-master:
+    dmz-node:
+
+infra-cluster:
+  children:
+    infra-master:
+    infra-node:

@@ -35,3 +35,11 @@ ansible-base:
     - ansible-playbook $CI_PROJECT_DIR/ansible/base.yaml
   rules:
     - if: '$SCRIPT == "base"'
+
+ansible-k3s-dev:
+  extends: .ansible
+  script:
+    - ansible-galaxy install -r $CI_PROJECT_DIR/ansible/roles/k3s/requirements.yaml
+    - ansible-playbook $CI_PROJECT_DIR/ansible/base.yaml -l dev-cluster
+  rules:
+    - if: '$SCRIPT == "k3s-dev"'
