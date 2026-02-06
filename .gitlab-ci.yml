@@ -5,6 +5,7 @@ spec:
       options:
         - ''
         - 'base'
+        - 'k3s-dev'
       default: ''
       type: string
 
