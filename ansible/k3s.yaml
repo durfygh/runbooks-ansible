@@ -34,38 +34,32 @@
           Expected derived groups '{{ master_group }}' and '{{ node_group }}' to exist in inventory
           for cluster '{{ cluster }}'.
 
-- name: Install k3s on master nodes (derived from cluster)
+- name: Install prerequisites on all nodes
+  hosts: "{{ cluster }}"
+  gather_facts: yes
+  become: yes
+  roles:
+    - base
+    - k3s/prereq
+    - k3s/download
+
+- name: Install k3s on master nodes
   hosts: "{{ (cluster | regex_replace('-cluster$', '')) ~ '-master' }}"
   gather_facts: yes
   become: yes
   roles:
-    - base
+    - k3s/master
 
-- name: Install k3s on worker nodes (derived from cluster)
+- name: Install k3s on worker nodes
   hosts: "{{ (cluster | regex_replace('-cluster$', '')) ~ '-node' }}"
   gather_facts: yes
   become: yes
   roles:
-    - base
+    - k3s/node
 
-#- hosts: dev-cluster
-#  gather_facts: yes
-#  become: yes
-#  roles:
-#    - k3s/prereq
-#    - k3s/download
-#
-#- hosts: master
-#  become: yes
-#  roles:
-#    - k3s/master
-#
-#- hosts: node
-#  become: yes
-#  roles:
-#    - k3s/node
-#
-#- hosts: master
-#  become: yes
-#  roles:
-#    - post
+- name: Post Install for k3s
+  hosts: "{{ (cluster | regex_replace('-cluster$', '')) ~ '-master' }}"
+  gather_facts: yes
+  become: yes
+  roles:
+    - k3s/post

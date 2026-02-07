@@ -46,5 +46,9 @@ ansible-k3s-dev:
   extends: .ansible-k3s
   variables:
     CLUSTER: "dev-cluster"
+    api_endpoint: "192.168.10.10"
+    k3s_version: "v1.35.0+k3s3"
+    ENVIRONMENT_NAME: "dev"
+    k3s_token: $dev_k3s_token
   rules:
     - if: '$SCRIPT == "k3s-dev"'
