@@ -34,6 +34,14 @@
           Expected derived groups '{{ master_group }}' and '{{ node_group }}' to exist in inventory
           for cluster '{{ cluster }}'.
 
+- name: Load k3s shared variables
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Load vars from k3s/vars/main.yaml
+      ansible.builtin.include_vars:
+        file: "./ansible/roles/k3s/vars/main.yaml"
+
 - name: Install prerequisites on all nodes
   hosts: "{{ cluster }}"
   gather_facts: yes
