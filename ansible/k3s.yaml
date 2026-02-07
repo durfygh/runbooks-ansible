@@ -1,0 +1,33 @@
+- hosts: master
+  gather_facts: yes
+  become: yes
+  roles:
+    - base
+
+- hosts: node
+  gather_facts: yes
+  become: yes
+  roles:
+    - base
+
+#- hosts: dev-cluster
+#  gather_facts: yes
+#  become: yes
+#  roles:
+#    - k3s/prereq
+#    - k3s/download
+#
+#- hosts: master
+#  become: yes
+#  roles:
+#    - k3s/master
+#
+#- hosts: node
+#  become: yes
+#  roles:
+#    - k3s/node
+#
+#- hosts: master
+#  become: yes
+#  roles:
+#    - post
