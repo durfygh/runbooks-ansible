@@ -40,7 +40,7 @@
   tasks:
     - name: Load vars from k3s/vars/main.yaml
       ansible.builtin.include_vars:
-        file: "ansible/roles/k3s/vars/main.yaml"
+        file: "roles/k3s/vars/main.yaml"
 
 - name: Install prerequisites on all nodes
   hosts: "{{ cluster }}"
