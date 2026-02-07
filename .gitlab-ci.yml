@@ -29,6 +29,11 @@ stages:
     - chmod 400 "$SSH_PRIVATE_KEY"
     - ssh-add "$SSH_PRIVATE_KEY"
 
+.ansible-k3s:
+  extends: .ansible
+  script:
+    - ansible-galaxy install -r $CI_PROJECT_DIR/ansible/roles/k3s/requirements.yaml
+    - ansible-playbook $CI_PROJECT_DIR/ansible/k3s.yaml -e cluster=$CLUSTER
 
 ansible-base:
   extends: .ansible
@@ -38,9 +43,8 @@ ansible-base:
     - if: '$SCRIPT == "base"'
 
 ansible-k3s-dev:
-  extends: .ansible
-  script:
-    - ansible-galaxy install -r $CI_PROJECT_DIR/ansible/roles/k3s/requirements.yaml
-    - ansible-playbook $CI_PROJECT_DIR/ansible/k3s.yaml -e dev-cluster
+  extends: .ansible-k3s
+  variables:
+    CLUSTER: "dev-cluster"
   rules:
     - if: '$SCRIPT == "k3s-dev"'
