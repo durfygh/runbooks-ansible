@@ -41,6 +41,6 @@ ansible-k3s-dev:
   extends: .ansible
   script:
     - ansible-galaxy install -r $CI_PROJECT_DIR/ansible/roles/k3s/requirements.yaml
-    - ansible-playbook $CI_PROJECT_DIR/ansible/k3s.yaml -l dev-cluster
+    - ansible-playbook $CI_PROJECT_DIR/ansible/k3s.yaml -e dev-cluster
   rules:
     - if: '$SCRIPT == "k3s-dev"'

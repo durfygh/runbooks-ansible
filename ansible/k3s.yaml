@@ -1,10 +1,48 @@
-- hosts: master
+- name: Validate cluster selection and derive group names
+  hosts: localhost
+  gather_facts: false
+  vars:
+    cluster: "{{ cluster | default('') }}"
+    cluster_prefix: "{{ cluster | regex_replace('-cluster$', '') }}"
+    master_group: "{{ cluster_prefix }}-master"
+    node_group: "{{ cluster_prefix }}-node"
+  tasks:
+    - name: cluster must be provided
+      ansible.builtin.assert:
+        that:
+          - cluster | length > 0
+        fail_msg: "Missing required var 'cluster'. Example: -e cluster=dev-cluster"
+
+    - name: cluster must be a *-cluster group
+      ansible.builtin.assert:
+        that:
+          - cluster is match('.*-cluster$')
+        fail_msg: "cluster must end with '-cluster' (ex: dev-cluster). Got: {{ cluster }}"
+
+    - name: cluster group must exist in inventory
+      ansible.builtin.assert:
+        that:
+          - cluster in groups
+        fail_msg: "Cluster group '{{ cluster }}' not found in inventory."
+
+    - name: derived master/node groups must exist in inventory
+      ansible.builtin.assert:
+        that:
+          - master_group in groups
+          - node_group in groups
+        fail_msg: >-
+          Expected derived groups '{{ master_group }}' and '{{ node_group }}' to exist in inventory
+          for cluster '{{ cluster }}'.
+
+- name: Install k3s on master nodes (derived from cluster)
+  hosts: "{{ (cluster | regex_replace('-cluster$', '')) ~ '-master' }}"
   gather_facts: yes
   become: yes
   roles:
     - base
 
-- hosts: node
+- name: Install k3s on worker nodes (derived from cluster)
+  hosts: "{{ (cluster | regex_replace('-cluster$', '')) ~ '-node' }}"
   gather_facts: yes
   become: yes
   roles:

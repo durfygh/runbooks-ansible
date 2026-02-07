@@ -28,14 +28,18 @@ dev-master:
     192.168.10.11:
     192.168.10.12:
     192.168.10.13:
-    192.168.11.11:
-    192.168.11.12:
-    192.168.11.13:
 dev-node:
   hosts:
     192.168.10.21:
     192.168.10.22:
     192.168.10.23:
+prd-master:
+  hosts:
+    192.168.11.11:
+    192.168.11.12:
+    192.168.11.13:
+prd-node:
+  hosts:
     192.168.11.21:
     192.168.11.22:
     192.168.11.23:
@@ -47,6 +51,11 @@ dev-cluster:
   children:
     dev-master:
     dev-node:
+
+prd-cluster:
+  children:
+    prd-master:
+    prd-node:
 
 dmz-cluster:
   children:
