@@ -51,3 +51,5 @@ kube_vip_tag_version: "v0.7.2"
 username: "administrator"
 
 environment: "{{ lookup('env','ENVIRONMENT_NAME') }}"
+master_group: "{{ (cluster | regex_replace('-cluster$', '')) ~ '-master' }}"
+node_group: "{{ (cluster | regex_replace('-cluster$', '')) ~ '-node' }}"

@@ -6,7 +6,7 @@
     owner: root
     group: root
     mode: 0644
-  when: ansible_hostname == hostvars[groups['master'][0]]['ansible_hostname']
+  when: ansible_hostname == groups[master_group][0]
 
 - name: Copy vip rbac manifest to first master
   template:
@@ -15,7 +15,7 @@
     owner: root
     group: root
     mode: 0644
-  when: ansible_hostname == hostvars[groups['master'][0]]['ansible_hostname']
+  when: ansible_hostname == groups[master_group][0]
 
 - name: Copy vip manifest to first master
   template:
@@ -24,7 +24,7 @@
     owner: root
     group: root
     mode: 0644
-  when: ansible_hostname == hostvars[groups['master'][0]]['ansible_hostname']
+  when: ansible_hostname == groups[master_group][0]
 
 - name: Init cluster inside the transient k3s-init service
   command:
