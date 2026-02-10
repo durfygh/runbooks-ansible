@@ -5,8 +5,15 @@ spec:
       options:
         - ''
         - 'base'
-        - 'k3s-dev'
+        - 'k3s'
       default: ''
+      type: string
+
+    ENVIRONMENT_NAME:
+      description: "Select the Environment"
+      options:
+        - 'dev'
+      default: 'dev'
       type: string
 
 ---
@@ -48,7 +55,6 @@ ansible-k3s-dev:
     CLUSTER: "dev-cluster"
     api_endpoint: "192.168.10.10"
     k3s_version: "v1.35.0+k3s3"
-    ENVIRONMENT_NAME: "dev"
     k3s_token: $dev_k3s_token
   rules:
-    - if: '$SCRIPT == "k3s-dev"'
+    - if: '$SCRIPT == "k3s" && $ENVIRONMENT_NAME == "dev"'
