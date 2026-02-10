@@ -19,6 +19,7 @@ spec:
 ---
 variables:
   SCRIPT: $[[ inputs.SCRIPT ]]
+  ENVIRONMENT_NAME: $[[ inputs.ENVIRONMENT_NAME ]]
   ANSIBLE_CONFIG: "$CI_PROJECT_DIR/ansible.cfg"
 
 stages:
