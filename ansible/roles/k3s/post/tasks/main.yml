@@ -3,4 +3,3 @@
     src: /home/administrator/.kube/config
     dest: "{{ playbook_dir }}/kubeconfig"
     flat: true
-  delegate_to: "{{ groups[master_group][0] }}"
