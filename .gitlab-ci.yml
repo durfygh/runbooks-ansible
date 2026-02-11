@@ -59,3 +59,8 @@ ansible-k3s-dev:
     k3s_token: $dev_k3s_token
   rules:
     - if: '$SCRIPT == "k3s" && $ENVIRONMENT_NAME == "dev"'
+  artifacts:
+    paths:
+      - config
+    expire_in: 1 days
+    when: always
