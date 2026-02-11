@@ -61,6 +61,6 @@ ansible-k3s-dev:
     - if: '$SCRIPT == "k3s" && $ENVIRONMENT_NAME == "dev"'
   artifacts:
     paths:
-      - $CI_PROJECT_DIR/kubeconfig
+      - $CI_PROJECT_DIR/
     expire_in: 1 days
     when: always
