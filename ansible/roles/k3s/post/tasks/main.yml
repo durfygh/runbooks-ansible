@@ -3,4 +3,4 @@
     src: /home/administrator/.kube/config
     dest: "{{ playbook_dir }}/kubeconfig"
     flat: true
-  when: ansible_hostname == groups[master_group][0]
+  delegate_to: "{{ groups[master_group][0] }}"
