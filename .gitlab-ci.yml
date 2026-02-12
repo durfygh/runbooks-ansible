@@ -13,6 +13,9 @@ spec:
       description: "Select the Environment"
       options:
         - 'dev'
+        - 'prd'
+        - 'infra'
+        - 'dmz'
       default: 'dev'
       type: string
 
@@ -59,6 +62,51 @@ ansible-k3s-dev:
     k3s_token: $dev_k3s_token
   rules:
     - if: '$SCRIPT == "k3s" && $ENVIRONMENT_NAME == "dev"'
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/ansible/kubeconfig
+    expire_in: 1 days
+    when: always
+
+ansible-k3s-prd:
+  extends: .ansible-k3s
+  variables:
+    CLUSTER: "prd-cluster"
+    api_endpoint: "192.168.11.10"
+    k3s_version: "v1.35.0+k3s3"
+    k3s_token: $prd_k3s_token
+  rules:
+    - if: '$SCRIPT == "k3s" && $ENVIRONMENT_NAME == "prd"'
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/ansible/kubeconfig
+    expire_in: 1 days
+    when: always
+
+ansible-k3s-infra:
+  extends: .ansible-k3s
+  variables:
+    CLUSTER: "infra-cluster"
+    api_endpoint: "192.168.12.10"
+    k3s_version: "v1.35.0+k3s3"
+    k3s_token: $infra_k3s_token
+  rules:
+    - if: '$SCRIPT == "k3s" && $ENVIRONMENT_NAME == "infra"'
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/ansible/kubeconfig
+    expire_in: 1 days
+    when: always
+
+ansible-k3s-dmz:
+  extends: .ansible-k3s
+  variables:
+    CLUSTER: "dma-cluster"
+    api_endpoint: "192.168.98.10"
+    k3s_version: "v1.35.0+k3s3"
+    k3s_token: $dmz_k3s_token
+  rules:
+    - if: '$SCRIPT == "k3s" && $ENVIRONMENT_NAME == "dmz"'
   artifacts:
     paths:
       - $CI_PROJECT_DIR/ansible/kubeconfig
