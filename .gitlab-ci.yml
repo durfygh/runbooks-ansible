@@ -101,7 +101,7 @@ ansible-k3s-infra:
 ansible-k3s-dmz:
   extends: .ansible-k3s
   variables:
-    CLUSTER: "dma-cluster"
+    CLUSTER: "dmz-cluster"
     api_endpoint: "192.168.98.10"
     k3s_version: "v1.35.0+k3s3"
     k3s_token: $dmz_k3s_token
