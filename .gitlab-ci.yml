@@ -73,7 +73,7 @@ ansible-k3s-prd:
   variables:
     CLUSTER: "prd-cluster"
     api_endpoint: "192.168.11.10"
-    k3s_version: "v1.35.0+k3s3"
+    k3s_version: "v1.36.0+k3s1"
     k3s_token: $prd_k3s_token
   rules:
     - if: '$SCRIPT == "k3s" && $ENVIRONMENT_NAME == "prd"'
@@ -88,7 +88,7 @@ ansible-k3s-infra:
   variables:
     CLUSTER: "infra-cluster"
     api_endpoint: "192.168.12.10"
-    k3s_version: "v1.35.0+k3s3"
+    k3s_version: "v1.36.0+k3s1"
     k3s_token: $infra_k3s_token
   rules:
     - if: '$SCRIPT == "k3s" && $ENVIRONMENT_NAME == "infra"'
@@ -103,7 +103,7 @@ ansible-k3s-dmz:
   variables:
     CLUSTER: "dmz-cluster"
     api_endpoint: "192.168.98.10"
-    k3s_version: "v1.35.0+k3s3"
+    k3s_version: "v1.36.0+k3s1"
     k3s_token: $dmz_k3s_token
   rules:
     - if: '$SCRIPT == "k3s" && $ENVIRONMENT_NAME == "dmz"'
