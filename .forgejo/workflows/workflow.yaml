@@ -29,7 +29,7 @@ env:
 jobs:
   ansible-base:
     if: ${{ github.event.inputs.SCRIPT == 'base' }}
-    runs-on: ubuntu-latest
+    runs-on: docker
     container:
       image: registry.durp.info/ubuntu:latest
     steps:
@@ -47,10 +47,10 @@ jobs:
 
   ansible-k3s:
     if: ${{ github.event.inputs.SCRIPT == 'k3s' }}
-    runs-on: ubuntu-latest
+    runs-on: docker
     container:
       image: registry.durp.info/ubuntu:latest
-    strategy:
+      strategy:
       matrix:
         include:
           - env_name: dev
