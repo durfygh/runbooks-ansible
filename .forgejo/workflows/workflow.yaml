@@ -1,0 +1,107 @@
+name: Ansible Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      SCRIPT:
+        description: 'Select which Ansible playbook to run'
+        required: true
+        default: 'base'
+        type: choice
+        options:
+          - 'base'
+          - 'k3s'
+      ENVIRONMENT_NAME:
+        description: 'Select the Environment'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - 'dev'
+          - 'prd'
+          - 'infra'
+          - 'dmz'
+
+env:
+  ANSIBLE_CONFIG: "${{ github.workspace }}/ansible.cfg"
+  DEBIAN_FRONTEND: noninteractive
+
+jobs:
+  ansible-base:
+    if: ${{ github.event.inputs.SCRIPT == 'base' }}
+    runs-on: ubuntu-latest
+    container:
+      image: registry.durp.info/ubuntu:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies and SSH
+        run: |
+          apt update && apt install tzdata ansible python3-pip -y
+          eval $(ssh-agent -s)
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' | ssh-add - > /dev/null
+
+      - name: Run Base Playbook
+        run: ansible-playbook ${{ github.workspace }}/ansible/base.yaml
+
+  ansible-k3s:
+    if: ${{ github.event.inputs.SCRIPT == 'k3s' }}
+    runs-on: ubuntu-latest
+    container:
+      image: registry.durp.info/ubuntu:latest
+    strategy:
+      matrix:
+        include:
+          - env_name: dev
+            cluster: "dev-cluster"
+            endpoint: "192.168.10.10"
+            token_secret: "dev_k3s_token"
+          - env_name: prd
+            cluster: "prd-cluster"
+            endpoint: "192.168.11.10"
+            token_secret: "prd_k3s_token"
+          - env_name: infra
+            cluster: "infra-cluster"
+            endpoint: "192.168.12.10"
+            token_secret: "infra_k3s_token"
+          - env_name: dmz
+            cluster: "dmz-cluster"
+            endpoint: "192.168.98.10"
+            token_secret: "dmz_k3s_token"
+    # Filter matrix to only run selected environment
+    steps:
+      - name: Check Environment
+        if: ${{ github.event.inputs.ENVIRONMENT_NAME != matrix.env_name }}
+        run: exit 0 # Skip if not the selected environment
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies and SSH
+        run: |
+          apt update && apt install tzdata ansible python3-pip -y
+          eval $(ssh-agent -s)
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' | ssh-add - > /dev/null
+
+      - name: Install Galaxy Roles
+        run: ansible-galaxy install -r ${{ github.workspace }}/ansible/roles/k3s/requirements.yaml
+
+      - name: Run K3s Playbook
+        env:
+          CLUSTER: ${{ matrix.cluster }}
+          # Accessing secrets dynamically by name
+          K3S_TOKEN: ${{ secrets[matrix.token_secret] }}
+        run: |
+          ansible-playbook ${{ github.workspace }}/ansible/k3s.yaml \
+            -e cluster=$CLUSTER \
+            -e api_endpoint=${{ matrix.endpoint }} \
+            -e k3s_version="v1.35.0+k3s3" \
+            -e k3s_token=$K3S_TOKEN
+
+      - name: Upload Kubeconfig
+        uses: actions/upload-artifact@v4
+        with:
+          name: kubeconfig-${{ matrix.env_name }}
+          path: ${{ github.workspace }}/ansible/kubeconfig
+          retention-days: 1
