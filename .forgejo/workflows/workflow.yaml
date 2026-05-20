@@ -31,7 +31,7 @@ jobs:
     if: ${{ github.event.inputs.SCRIPT == 'base' }}
     runs-on: docker
     container:
-      image: registry.durp.info/ubuntu:latest
+      image: ubuntu:latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -49,7 +49,7 @@ jobs:
     if: ${{ github.event.inputs.SCRIPT == 'k3s' }}
     runs-on: docker
     container:
-      image: registry.durp.info/ubuntu:latest
+      image: ubuntu:latest
       strategy:
       matrix:
         include:
