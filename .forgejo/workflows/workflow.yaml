@@ -100,7 +100,7 @@ jobs:
             -e k3s_token=$K3S_TOKEN
 
       - name: Upload Kubeconfig
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: kubeconfig-${{ matrix.env_name }}
           path: ${{ github.workspace }}/ansible/kubeconfig
