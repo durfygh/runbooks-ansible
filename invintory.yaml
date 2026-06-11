@@ -78,3 +78,7 @@ node:
     infra-node:
     dmz-node:
     dev-node:
+
+hermes:
+  hosts:
+    192.168.12.50:
