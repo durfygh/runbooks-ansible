@@ -34,7 +34,7 @@ jobs:
       image: ubuntu:latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install dependencies and SSH
         run: |
@@ -76,7 +76,7 @@ jobs:
         run: exit 0 # Skip if not the selected environment
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install dependencies and SSH
         run: |
